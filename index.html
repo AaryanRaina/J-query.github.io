@@ -1,0 +1,251 @@
+<html>
+	
+	
+	<head>
+		
+		<script src="jquery-3.5.1.min.js"></script>	
+
+	<style>
+	
+		body{
+			font-family:sans-serif;
+			padding:0;
+			margin:0;
+		}
+		
+		#topbar{
+			width:100%;
+			background-color:#EDEDED;
+			padding:5px;
+			height:30px;
+		}
+	
+		#buttons{
+			width:233px;
+			margin:0 auto;
+		}
+		
+		#logo{
+			float:left;
+			font-weight:bold;
+			font-size:130%;
+			padding:3px;
+		}
+		
+		.toggle{
+			float:left;
+			border: 1px solid gray;
+			padding:5px;
+			border-right:none;
+			font-size:90%;
+		}
+		
+		#output{
+			border-right:1px solid gray;
+			border-top-right-radius:5px;			/* this sets the radius of the top right corner of the border as 5px */
+			border-bottom-right-radius:5px;
+		}
+		
+		#html{
+			border-top-left-radius:5px;		
+			border-bottom-left-radius:5px;
+
+		}
+		
+		.active{
+			background-color:#E8F2FF;
+		}
+		
+		
+		.highlightedButton{
+			background-color:gray;
+		}
+		
+		textarea{
+			resize:none;
+			border-top:none;
+			border-color:lightgray;
+		}
+		
+		.panel{
+			width:50%;
+			float:left;
+			border-left:none;
+		}
+		
+		iframe{
+			border:none;
+		}
+		
+		.hidden{
+			display:none;
+		}
+		
+	
+		
+		
+		
+		
+		
+		
+	
+	</style>
+	
+	
+	</head>
+	
+	
+	<body>
+	<div id="topbar">
+	
+	
+	
+	<div id="logo">
+		Code Player
+	</div>
+		
+	<div id="buttons">
+		
+		<div class="toggle active" id="html">				<!-- we can apply multiple classes at once separated by a space each! -->
+			HTML
+		</div>
+		
+		<div class="toggle" id="css">
+			CSS
+		</div>
+		
+		<div class="toggle" id="javascript">
+			Javascript
+		</div>
+		
+		<div class="toggle active" id="output">
+			Output
+		</div>
+		
+		
+		
+		
+	</div>
+	
+	
+	</div>
+
+	<div id="bodyContainer">
+	
+		<textarea id="htmlPanel" class="panel"><p>type the html here!</p></textarea>				<!-- textarea is the place where we can write text in proper way -->
+		
+		<textarea id="cssPanel" class="panel hidden">p{color:red} </textarea>
+		
+		<textarea id="javascriptPanel" class="panel hidden"></textarea>
+		
+		<iframe id="outputPanel" class="panel"></iframe>									<!-- since we won't process any code inside the outputPanel thus we use an iframe instead of a div -->
+		
+		
+	</div>	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	<script type="text/javascript">
+		alert("Welcome to JS bin simulator!")
+		
+		 function updateOutput() {
+                
+                $("iframe").contents().find("html").html("<html><head><style type='text/css'>" + $("#cssPanel").val() + "</style></head><body>" + $("#htmlPanel").val() + "</body></html>");
+                
+		        
+				document.getElementById("outputPanel").contentWindow.eval($("#javascriptPanel").val());
+		
+        }       
+		
+		$(".toggle").hover(function(){
+			$(this).addClass("highlightedButton");						//hover will have 2 functions one for changing color to when the element is hovered upon
+																		//we can explicitly add a class or remove a class like this!!
+		},function(){
+			$(this).removeClass("highlightedButton");					// and the other when the cursor is moved away!
+		
+		});
+		
+		$(".toggle").click(function(){
+			$(this).toggleClass("active");						//the toggleClass function toggles between the active class that
+																// if the button is already clicked it removes the class and if its not it adds the class.
+			$(this).removeClass("highlightedButton");
+			
+			//to show/hide the textarea of any one of the four.
+			var panelId = $(this).attr("id") + "Panel"
+			$("#" + panelId).toggleClass("hidden");
+			
+			
+			//dividing the workspace into 4 equal parts dynamically
+			var count = 4 - $(".hidden").length;				//count= number of active panels 
+			$(".panel").width(($(window).width() / count) - 10);						//.width() fetches the width of any element and $(window).width() fetches the width of user's webpage window
+
+		})
+		
+		$(".panel").height($(window).height() - $("#topbar").height() - 15);				//.height() fetches the height of any element and $(window).height() fetches the height of user's webpage window
+		
+		$(".panel").width(($(window).width() / 2) - 10);						//.width() fetches the width of any element and $(window).width() fetches the width of user's webpage window
+	
+		//to get the iframe and the textarea have same content
+		//$("iframe").contents().find("html").html($("#htmlPanel").val());			//.contents() fetches the contents of iframe and .find() we pass a the type of element that we wanna change!
+		
+		//to update the outputPanel immediately after a change in the htmlPanel
+		
+		updateOutput();
+            
+        $("textarea").on('change keyup paste', function() {
+    
+                updateOutput();
+                
+                
+        });
+		
+		
+		
+		
+	</script>
+	
+	
+	
+	
+	
+	
+	
+	
+	</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
